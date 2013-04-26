@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auto3000", "Auto3000\Auto3000.csproj", "{760D44A7-7E7E-4E18-9019-0FDC610D950B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{760D44A7-7E7E-4E18-9019-0FDC610D950B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{760D44A7-7E7E-4E18-9019-0FDC610D950B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{760D44A7-7E7E-4E18-9019-0FDC610D950B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{760D44A7-7E7E-4E18-9019-0FDC610D950B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

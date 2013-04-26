@@ -1,0 +1,88 @@
+﻿@model Auto3000.Models.LoginModel
+@{    
+    
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link href="@Url.Content("~/Content/login.css")" rel="stylesheet" type="text/css" />
+    @*   @Styles.Render("~/Content/css")*@
+</head>
+<body>
+    <div class="wrapper">
+        <div class="topBar logInTop">
+            <div class="topLink rgt">
+                <a href="javascript:void(0)">
+                    <img src="@Url.Content("~/Content/images/icon_user.png")" width="21" height="22" alt="" /><strong>Contact
+                        Admin</strong> </a>
+            </div>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="logInHolder">
+            <img src="@Url.Content("~/Content/images/Logo.png")" alt="" width="199" height="163" class="logo" />
+            <div class="logInBox">
+                <div class="logInhead">
+                    <img src="@Url.Content("~/Content/images/icon_Login.png")" width="69" height="38" alt="" />
+                </div>
+                @using (Html.BeginForm())
+                {                    
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary()
+                    <input type="hidden" name="hdnPSID" id="hdnPSID" />                  
+                    <div id="primary">
+                        <div class="loginRow txtBox1 field-validation-error">
+                            <label>
+                                User Name :</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @maxlength = "20", @class = "fT" })
+                            <div class="clr">
+                            </div>
+                        </div>
+                        <div class="loginRow txtBox1 field-validation-error">
+                            <label>
+                                Password :</label>
+                            @Html.PasswordFor(m => m.Password, new { @maxlength = "20" })
+                            <div class="clr">
+                            </div>
+                        </div>
+
+                        <div class="clr">
+                        </div>
+                        <div class="loginRow">
+                            <input name="prLogin" type="submit" class="btn1 rgt prLogin" id="prLogin" value="Submit" />
+                            <div class="clr">
+                            </div>
+                        </div>
+                        @*   @Html.ValidationSummary(false)*@
+                    </div>                        
+                }
+            </div>
+        </div>
+    </div>
+    @*  <script type="text/javascript">
+        $('#Pac1,#Pac2,#Pac3').live('keyup', function () {
+            if ($(this).val() != '') {
+                    $(this).next().next().focus();
+            }
+        });
+        $(function () {
+            $('.fT').focus();
+
+            $("#prLogin").live('click', function () {
+                var currentTime = new Date();
+                var day = currentTime.getDate().toString(); if (day.length == 1) { day = "0" + day; }
+                var month = (currentTime.getMonth() + 1).toString(); if (month.length == 1) { month = "0" + month; }
+                var hour = currentTime.getHours().toString(); if (hour.length == 1) { hour = "0" + hour; }
+                var minute = currentTime.getMinutes().toString(); if (minute.length == 1) { minute = "0" + minute; }
+                datetime = (day + '' + month + '' + hour + '' + minute);
+                $('#hdnPSID').val(datetime);
+            });
+         });
+    </script>*@
+
+    @Scripts.Render("~/bundles/jquery")
+
+</body>
+</html>

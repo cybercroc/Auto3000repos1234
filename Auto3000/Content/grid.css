@@ -1,0 +1,5 @@
+.productSelecion ul li{width:460px; text-align:left; text-transform:capitalize;}
+.productSelecion{max-height:340px; overflow:hidden; overflow-y:auto; overflow-x:hidden}
+.capitalize{ text-transform:capitalize;}
+
+/*.proBasicFileDoc ul li:nth-child(4){ cursor:pointer;}*/
