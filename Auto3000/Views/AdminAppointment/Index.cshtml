@@ -1,0 +1,221 @@
+﻿@model Auto3000.Models.AdminModel.Announcement
+@{
+    ViewBag.Title = "Manage Appointment";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+@section Db_Popup
+{
+    <div class="popCore" style="width: 740px">
+        <div class="heading drag">
+            <span>Appointment</span>
+            <div class="popMenu">
+                <a href="javascript:void(0)" title="Close" class="close">
+                    <img src="@Url.Content("~/Content/images/icon_close.png")" width="14" height="14" alt="Close" /></a>
+            </div>
+        </div>
+
+
+        @using (Ajax.BeginForm("Index", "AdminAppointment", null,
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "updateSucces",
+            OnFailure = "updateFailure"
+        }, new { @id = "appointmentForm" }))
+        {
+         
+            @Html.HiddenFor(model => model.AnnouncementId, new { @id = "hdAppointmentId" })
+   
+            <div class="baseForm lft padBNone">
+                <div class="formRow  field-validation-error">
+                    <label class="type1 fT">
+                        Description
+                    </label>
+                    @Html.TextBoxFor(model => model.Description, new { @id = "txtDescription", @class = "txtBox6 fT", @maxlength = "50" })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div> 
+            <div class="baseForm lft padBNone" style="width: 47%;">
+                <div class="formRow  field-validation-error">
+                    <label class="type1">
+                        Title
+                    </label>
+                    @Html.TextBoxFor(model => model.Title, new { @id = "txtTitle", @class = "txtBox1", @maxlength = "100" })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm rgt padBNone" style="width: 47%;">
+                <div class="formRow  field-validation-error">
+                    <label class="type1">
+                        Active
+                    </label>
+
+                    @Html.CheckBox("IsActive")
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="clr">
+            </div>    
+        }
+
+        <div class="popFooter">
+            <div class="popBtnHolder">
+                <input id="btnSubmit" type="button" value="Submit" class="btn2 lft" />
+                <input id="btnCancel" type="button" value="Cancel" class="btn2 lft" />
+            </div>
+        </div>
+    </div>
+}
+@section Db_pageHeading{
+}
+@section Db_rightTop{
+}
+@section Db_rightNav
+{
+
+    <div class="contentCore">
+        <div class="gridInnerHead">
+            <span class="lft">Announcements</span>
+            <a href="javascript:void(0)" class="headBtn addNew">
+                <img src="@Url.Content("~/Content/images/adbtnImg.png")" width="16" height="18" alt="" />Add
+                            New </a>
+
+            <div class="clr">
+            </div>
+        </div>
+        <div class="gridCore Country">
+            <ul class="gridHead">
+                <li fl="30">Title</li>
+                <li fl="55">Description</li>
+                <li fx="80">Expiry Date</li>
+                <li fx="80">Active</li>
+                <li fx="90">Edit</li>
+            </ul>
+
+
+            <div id="maingrid">
+            </div>
+        </div>
+    </div>
+}
+
+@section Db_Header
+{
+
+    <script type="text/javascript">
+
+
+        $('.close').live('click', function () { popClose(); }); //closing function
+        $('#btnCancel').live('click', function () { popClose(); }); //closing function      
+
+        //Add Function
+        $(".addNew").live('click', function () {
+            popOpen(formHtml1);
+            rebindForm("#appointmentForm");
+            $('#hdAppointmentId').val(0);
+        });
+        $('.edtRow').live('click', function () {
+            li_id = $(this).parent().parent().attr('id');
+
+            var viewUrl = "Appointments?id=" + li_id;
+            $.ajax({  //Ajax Call Start To Retrieve Menu List
+                type: "GET",
+                url: viewUrl,
+                dataType: 'json',
+                success: function (response) {
+                    popOpen(formHtml1);
+                    rebindForm("#appointmentForm");
+                    $('#hdAppointmentId').val(response[0].AnnouncementId);
+                    $('#txtDescription').val(response[0].Description);
+                    $('#txtTitle').val(response[0].Title);
+
+
+                    if (response[0].IsActive) {
+                        $('#IsActive').attr('checked', 'checked');
+                    }
+                    else {
+                        $('#IsActive').removeAttr('checked');
+
+                    }
+
+                } //Response Close
+            }); //Ajax Call Close 
+
+        });           //Edit Close
+
+
+        //Delete function
+        $('.dltRow').live('click', function () {
+            li_id = $(this).parent().parent().attr('id');
+
+            var viewUrl = "appointmentdel?id=" + li_id;
+            $.ajax({  //Ajax Call Start To Retrieve Menu List
+                type: "GET",
+                url: viewUrl,
+                dataType: 'json',
+                success: function (response) {
+                    BindGrid();
+                }
+            });
+
+        });
+        //Submit Form
+        $('#btnSubmit').live('click', function () {
+            $("#appointmentForm").submit();
+
+        });
+        function updateSucces(data, status, xhr) {
+            var response = eval(data);
+            BindGrid();
+            popClose();
+        }
+        function updateFailure(ajaxContext) {
+            if (ajaxContext.readyState == 4 && ajaxContext.status != 200) {
+                $('.validation-summary-valid').addClass('validation-summary-errors').removeClass('validation-summary-valid');
+                $('.validation-summary-errors ul').html("<li>Invalid Entry..!</li>");
+            }
+        }
+
+        $(document).ready(function () {
+            BindGrid();
+        });
+
+        function BindGrid() {
+            var html = "";
+            $.ajax({
+                type: "GET",
+                url: "Appointments?id=0",
+                dataType: 'json',
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+
+                        html += '<ul id="' + response[i].AnnouncementId + '">';
+                        html += '<li>' + response[i].Title + '</li>';
+                        html += '<li>' + response[i].Description + '</li>';
+                        html += '<li>Expiry</li>';
+
+                        if (response[i].IsActive) {
+
+                            html += '<li><img src="@Url.Content("~/Content/images/tick.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+                        else {
+                            html += '<li><img src="@Url.Content("~/Content/images/cross.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+
+                        html += '<li><a href="javascript:void(0)" title="Edit" class="edtRow"><img src="@Url.Content("~/Content/images/iconEdit.png")" width="14" height="14" alt="Edit" /></a>';
+
+                        html += '<a href="javascript:void(0)" title="Delete" class="dltRow"><img src="@Url.Content("~/Content/images/iconDelete.gif")" width="14" height="14" alt="Delete" /></a></li>';
+                        html += '</ul>';
+
+                    }
+                    $('#maingrid').html(html);
+                    $('#maingrid ul').show();
+                }
+            });
+        }
+
+    </script>
+}

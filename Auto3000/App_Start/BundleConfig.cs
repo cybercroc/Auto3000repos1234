@@ -39,6 +39,11 @@ namespace Auto3000
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new ScriptBundle("~/Content/AdminJs").Include(
+                       "~/Scripts/Admin/main.js",
+                       "~/Scripts/Admin/tooltip.js",
+                       "~/Scripts/Admin/scroll.min.js"));
         }
     }
 }

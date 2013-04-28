@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;   
 }
 <!DOCTYPE html>
@@ -23,10 +22,12 @@
     @********************Popup Form************************@ @****************Top Navigation***********************@
     <div class="topBar width1150">
         <div class="headerCollapsHldr">
-            <a href="javascript:void(0)" class="collapseHdr">&nbsp;</a></div>
+            <a href="javascript:void(0)" class="collapseHdr">&nbsp;</a>
+        </div>
         <div class="topLink rgt">
             <a href="javascript:void(0)">
-                <img src="@Url.Content("~/Content/images/icon_logout.png")" width="21" height="22" alt="" />@Html.ActionLink("Log Out", "LogOff", "Account")</a></div>
+                <img src="@Url.Content("~/Content/images/icon_logout.png")" width="21" height="22" alt="" />@Html.ActionLink("Log Out", "LogOff", "AdminAccount")</a>
+        </div>
         <div class="topLink rgt" id="divfavorites">
         </div>
         @* <div class="topLink rgt">
@@ -37,18 +38,20 @@
                 <img src="@Url.Content("~/Content/images/icon_message.png")" width="21" height="22" alt="" />Messages</a></div>*@
         <div class="topLink rgt">
             <a href="javascript:void(0)">
-                <img src="@Url.Content("~/Content/images/icon_ptofile.png")" width="21" height="22" alt="" />@Html.Partial("_LogOnPartial")</a></div>
+                <img src="@Url.Content("~/Content/images/icon_ptofile.png")" width="21" height="22" alt="" /></a>
+        </div>
+        @* @Html.Partial("_LogOnPartial")*@
         <div class="clr">
         </div>
     </div>
     <div class="headerPart expand">
         <div class="headerInner width1150">
-            <a href="@Url.RouteUrl("Dashboard")" class="logo2">&nbsp;</a>
+            <a href="@Url.RouteUrl("AdminDashboard")" class="logo2">&nbsp;</a>
             <div class="headerLinksHolder">
                 @*    <a href="javascript:void(0)" class="headerLinks mr60"><img src="@Url.Content("~/Content/images/icon_statistics.png")" width="16" height="15" alt="" class="lft" /><span>Statistics</span></a>*@
                 <a href="javascript:void(0)" class="headerLinks openFav">
                     <img src="@Url.Content("~/Content/images/icon_userList.png")" width="24" height="15" alt="User List" class="lft" /><span>Favourite</span></a>
-                <a href="@Url.RouteUrl("Dashboard")" class="headerLinks">
+                <a href="@Url.RouteUrl("AdminDashboard")" class="headerLinks">
                     <img src="@Url.Content("~/Content/images/icon_messageL.png")" width="18" height="15" alt="Message" class="lft" /><span>Dashboard</span></a>
             </div>
             <div class="clr">
@@ -56,35 +59,36 @@
         </div>
     </div>
     @****************End Top Navigation***********************@
-    @if ((User.Identity.Name.Split(',')[1] == "SOFTENG") || (User.Identity.Name.Split(',')[1] == "softeng"))
-    {
-        
-         <div class='onePix'>
-            <div class="tdLInner ">
-                <ul class="bCloser">
-                 
-                    <li><a href="/cmsmenu">Menu Header</a></li>
-                    <li><a href="/cmsmenusubheader">Menu Sub-Header</a></li>
-                    <li><a href="/cmsmenuelement">Menu Elements</a></li>
-                    <li><a href="/pagetype">Page Type</a></li>
-                    <li><a href="/folders">Folders</a></li>
-                </ul>
-                <div class="clr">
-                </div>
-                <div class="tgHldr thrdLvl">
-                    <a href="javascript:void(0)" class="">System Settings</a>
-                    <span class="spnCp"></span>
-                    <div class="clr">
-                    </div>
-                </div>
+    <div class='onePix'>
+        <div class='tdLInner'>
+            <ul class='bCloser'>
+
+                <li><a href="javascript:">Sub Item</a></li>
+            </ul>
+            <div class='clr'></div>
+            <div class='tgHldr thrdLvl'>
+                <a href='javascript:void(0)' class=''>Main ITem</a><span class='spnCp'></span>
+                <div class='clr'></div>
             </div>
         </div>
-       
-    }
-    else
-    {
-     @Html.Action("topMenu", "PartialPage")
-    }
+    </div>
+    <div class='onePix'>
+        <div class='tdLInner'>
+            <ul class='bCloser'>
+
+                <li><a href="javascript:">Sub Item</a></li>
+            </ul>
+            <div class='clr'></div>
+            <div class='tgHldr thrdLvl'>
+                <a href='javascript:void(0)' class=''>Main Menu</a><span class='spnCp'></span>
+                <div class='clr'></div>
+
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="quick">
         <div class="quickLink ">
             <ul id="getTopFavourates">
@@ -97,73 +101,78 @@
         <div class="clr">
         </div>
     </div>
-     @if (Request.RawUrl.Split('/').Last() != "dashboard")
-     {
-    <div class="wrapper" id="wrapper">
-       
-        <div class="contentHolder">
-            @****************Left Navigation***********************@
-            
-            <div class="leftBox">
-            
-                <div class="leftController">
+    @if (Request.RawUrl.Split('/').Last() != "dashboard")
+    {
+        <div class="wrapper" id="wrapper">
+
+            <div class="contentHolder">
+                @****************Left Navigation***********************@
+
+                <div class="leftBox">
+
+                    <div class="leftController">
+                    </div>
+
+                    <ul class="mC">
+
+
+                        <li>
+                            <img src='Content/images/leftIcon2.png' width='19' height='19' alt='' />
+                            <a href='javascript:' class='hvDrop'>Header Name </a>
+                            <ul class='exAccord'>
+                                <h2>Header Name</h2>
+                                <li name="Menu"><a href='javascript:'>" + item.MenuSubHeaderName + "</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><span class="mCollapse">&nbsp;</span></li>
+                    </ul>
+
                 </div>
-                
-                <ul class="mC">
-                  
-                    @if ((User.Identity.Name.Split(',')[1] == "SOFTENG") || (User.Identity.Name.Split(',')[1] == "softeng"))
-                    { }
-                    else
-                    { 
-                      @Html.Action("leftmenu", "PartialPage")
-                      
+
+                @****************End Left Navigation***********************@ @****************Right Navigation***********************@
+                <div class="rightBox wC">
+                    @if (IsSectionDefined("Db_pageHeading"))
+                    {
+                        @RenderSection("Db_pageHeading", required: false)
                     }
-                    
-                    <li><span class="mCollapse">&nbsp;</span></li>
-                </ul>
-                
-            </div>
-             
-            @****************End Left Navigation***********************@ @****************Right Navigation***********************@
-            <div class="rightBox wC">
-                @if (IsSectionDefined("Db_pageHeading"))
-                {
-                    @RenderSection("Db_pageHeading", required: false)
-                }
-                @if (IsSectionDefined("Db_rightFilter"))
-                {
-                    @RenderSection("Db_rightFilter", required: false)
-                }
-                <div class="clr">
+                    @if (IsSectionDefined("Db_rightFilter"))
+                    {
+                        @RenderSection("Db_rightFilter", required: false)
+                    }
+                    <div class="clr">
+                    </div>
+                    @if (IsSectionDefined("Db_rightTop"))
+                    {
+                        @RenderSection("Db_rightTop", required: false)
+                    }
+                    @if (IsSectionDefined("Db_rightNav"))
+                    {
+                        @RenderSection("Db_rightNav", required: false)
+                    }
                 </div>
-                @if (IsSectionDefined("Db_rightTop"))
-                {
-                    @RenderSection("Db_rightTop", required: false)
-                }
-                @if (IsSectionDefined("Db_rightNav"))
-                {
-                    @RenderSection("Db_rightNav", required: false)
-                }
+            </div>
+
+            @****************End Right Navigation***********************@
+            @RenderBody()
+            <div class="clr">
             </div>
         </div>
-     
-        @****************End Right Navigation***********************@
-        @RenderBody()
-        <div class="clr">
+    }
+    else if (Request.RawUrl.Split('/').Last() == "dashboard")
+    {
+
+        <div class="wrapper">
+            <div class="slideIndicator">
+                <h3>Dashboard</h3>
+                <div class="clr"></div>
+            </div>
+
         </div>
-    </div>
-     }
-     else if (Request.RawUrl.Split('/').Last() == "dashboard")
-               {
-         if ((User.Identity.Name.Split(',')[1] == "SOFTENG") || (User.Identity.Name.Split(',')[1] == "softeng"))
-         {
-         }
-         else {
-    <div class="wrapper"><div class="slideIndicator"><h3>Dashboard</h3><div class="clr"></div></div>
-       
-</div>
-             }   }
-     
+
+    }
+
     @if (IsSectionDefined("Db_Dashboard"))
     {
         @RenderSection("Db_Dashboard", required: false)
@@ -178,11 +187,161 @@
         </div>
     </div>
     @****************End Footer***********************@ @****************************************Scripts files***************************************@
-   
-    
-        @Scripts.Render("~/bundles/jquery")
 
-    
+
+    @Scripts.Render("~/bundles/jquery")
+
+    @Scripts.Render("~/bundles/jqueryui")
+
+    @Scripts.Render("~/Content/AdminJs")
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script type="text/javascript">
+        $.ajaxSetup({ cache: false });
+        var urlkey = '@System.Configuration.ConfigurationManager.AppSettings["URLkey"]';
+           li_id = 0;
+           li_id1 = 0;
+           var ul_Control = '';
+           var order = '';
+           $(document).ready(function () {
+               formHtml1 = $('.lightFrame').html(); //Copy html to var 
+               $('.lightFrame').remove(); // remove HTML        
+               resetGrid();
+               //remove code softeng not working.
+
+
+               if (parseInt('@ViewBag.ShowFavourite') == 0) {
+
+                $('#divfavorites').html('<a href="javascript:void(0)" class="favorites add"><img src="Content/images/icon_settings.png" width="21" height="22" alt="" />Add to favourites</a>'); $('#divfavorites').show();
+            }
+            if (parseInt('@ViewBag.ShowFavourite') > 0) {
+
+                $('#divfavorites').html('<a href="javascript:void(0)" class="favorites remove"><img src="Content/images/icon_settings.png" width="21" height="22" alt="" />Remove from favourites</a>'); $('#divfavorites').show();
+            }
+            if (parseInt('@ViewBag.ShowFavourite') < 0) {
+                $('#divfavorites').hide();
+            }
+        });
+
+
+        $('.saveQuickLink').live('click', function () {
+            click = 0;
+            var QuickIds = '';
+            $(".quickLink ul li").each(function (index, value) {
+                QuickIds += $(this).attr('id') + ",";
+            });
+
+            //if (QuickIds != '') {
+            var viewUrl = "reorderFavourateElements?id=" + QuickIds;
+            $.ajax({
+                type: "POST",
+                url: viewUrl,
+                dataType: 'json',
+                success: function (response) {
+                }
+            });
+            //}
+            // qlmanageStop()
+            $(".quickLink ul").removeClass('move');
+            $(this).replaceWith('<a href="javascript:void(0)" class="rgt manageQuickLink mR60">Manage</a>');
+            //$('.quickBox').stop().fadeOut();
+            lock = true;
+        });
+
+        $('.favorites.add').live('click', function () {
+
+            var finalurl = '';
+            var url = window.location.href;
+            var finalurl = url.substring(url.lastIndexOf('/') + 1);
+            if (finalurl != '') {
+                var viewUrl = "Insertfavorite?hyperlink=" + finalurl;
+                $.ajax({
+                    type: "POST",
+                    url: viewUrl,
+                    dataType: 'json',
+                    success: function (response) {
+
+                    }
+                });
+                $(this).html('<img src="Content/images/icon_settings.png" width="21" height="22" alt="" />Remove from favourites');
+                $(this).removeClass('add').addClass('remove');
+            }
+        });
+
+
+        $('.favorites.remove').live('click', function () {
+            var finalurl = '';
+            var url = window.location.href;
+            var finalurl = url.substring(url.lastIndexOf('/') + 1);
+            if (finalurl != '') {
+                var viewUrl = "Deletefavorite?hyperlink=" + finalurl;
+                $.ajax({
+                    type: "POST",
+                    url: viewUrl,
+                    dataType: 'json',
+                    success: function (response) {
+
+                    }
+                });
+                $(this).html('<img src="Content/images/icon_settings.png" width="21" height="22" alt="" />Add to favourites');
+                $(this).removeClass('remove').addClass('add');
+            }
+        });
+
+        $(".quickLink  ul li a").live('click', function () {
+            if (click == 1) { return false; }
+        });
+        var click = 0;
+
+        $('.openFav').live('click', function () {
+            if ($('.quickLink').is(":visible")) {
+                $('.quickLink').slideUp(200);
+                return false;
+            }
+            else {
+
+                $('#getTopFavourates').html('');
+                var viewUrl = "getTopFavourates";
+                $.ajax({
+                    type: "GET",
+                    url: viewUrl,
+                    dataType: 'json',
+                    success: function (response) {
+
+                        if (response != '') {
+                            var _html = "";
+                            $(response).each(function (index, value) {
+                                _html += '<li   id=' + value.HyperLink + '  title="' + value.Name + '">';
+                                _html += '<a href=' + value.HyperLink + '><img src="Content/images/process.png" width="32" height="32" alt="" />';
+                                _html += '<span> ' + value.Name + '</span>';
+                                _html += '<a href="javascript:void(0)" class="closeX">&nbsp;</a>';
+                                _html += '</li>';
+
+                            }); //each function Close   
+                            _html += '<div class="clr"></div>';
+                            $('#getTopFavourates').html(_html);
+                            $('.quickLink').slideDown(200); // removed this from main.js
+                            return false;
+                        }
+
+
+                    }
+                });
+            }
+
+        });
+        $('.manageQuickLink').live('click', function () {
+            click = 1;
+            qlManage();
+            $(".quickLink ul").addClass('move');
+            $(this).replaceWith('<a href="javascript:void(0)" class="rgt saveQuickLink mR60">Finish</a>');
+            //$('.quickBox').stop().fadeIn();
+            lock = false;
+        });
+
+    </script>
+
     @if (IsSectionDefined("Db_Header"))
     {
         @RenderSection("Db_Header", required: false)    
