@@ -1,0 +1,154 @@
+/****** Object:  Table [dbo].[tblAppointment]    Script Date: 04/29/2013 01:14:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tblAppointment](
+	[AnnouncementId] [int] IDENTITY(1,1) NOT NULL,
+	[ExpiryDate] [date] NOT NULL,
+	[Title] [varchar](100) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreatedBy] [int] NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [int] NULL,
+	[ModifiedDate] [datetime] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_tblAppointment] PRIMARY KEY CLUSTERED 
+(
+	[AnnouncementId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+/****** Object:  Table [dbo].[tblAdminUser]    Script Date: 04/29/2013 01:14:07 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblAdminUser](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [nvarchar](100) NULL,
+	[Password] [nvarchar](100) NULL
+) ON [PRIMARY]
+
+GO
+
+
+
+
+
+
+
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Gurpreet>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[usp_tblAppointment_del]
+	(
+	@AnnouncementId int
+	)
+AS
+BEGIN
+
+delete from dbo.tblAppointment where AnnouncementId=@AnnouncementId
+END
+GO
+
+
+alter proc [dbo].[usp_tblAppointment_ins]
+(
+@AnnouncementId int ,
+@Title varchar(100),
+@Description nvarchar(max),
+@IsActive bit
+)
+as 
+begin
+
+if @AnnouncementId=0
+begin
+Insert into dbo.tblAppointment (ExpiryDate , Title, [Description],  CreatedDate,IsActive)
+values                         ('02/20/2014',@Title, @Description ,    getdate(),@IsActive)
+select cast( scope_identity() as int ) as ReturnValue
+end
+else
+begin
+update dbo.tblAppointment 
+set ExpiryDate ='02/20/2014',
+ Title=@Title,
+ [Description]=@Description,
+ ModifiedDate=getdate(),
+ IsActive=@IsActive
+ where AnnouncementId=@AnnouncementId
+select @AnnouncementId
+end
+end
+
+go
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Gurpreet>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+alter PROCEDURE [dbo].[usp_tblAppointment_sel]
+(
+@AnnouncementId int
+)
+AS
+BEGIN
+--usp_tblAppointment_sel 0
+if @AnnouncementId=0 begin set @AnnouncementId=null end 
+	SET NOCOUNT ON;
+select AnnouncementId, ExpiryDate, Title,IsActive, [Description] from dbo.tblAppointment
+where  AnnouncementId=isnull(@AnnouncementId,AnnouncementId)
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER proc [dbo].[usp_tblAdminUser_sel]
+(
+@UserName nvarchar(100),
+@Password nvarchar(100)
+)
+as
+begin
+
+if exists (select 1 from dbo.tblAdminUser where UserName=@UserName and [Password]=@Password)
+begin
+select UserId as ResultVal from dbo.tblAdminUser where UserName=@UserName and [Password]=@Password
+end 
+else
+begin
+select 0 as ResultVal
+end
+end
+go
+
