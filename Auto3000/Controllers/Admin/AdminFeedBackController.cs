@@ -24,7 +24,7 @@ namespace Auto3000.Controllers.Admin
         }
 
         #endregion
-        #region [Update records into Feedback table]    
+        #region [Update records into Feedback table]
 
         [HttpPost]
         public ActionResult Index(String FeedbackId, bool IsShow = false)
@@ -37,11 +37,11 @@ namespace Auto3000.Controllers.Admin
 
         #region [Delete records from Feedback table]
 
-        [HttpPost]
+
         public ActionResult Delete(Int32? FeedbackId)
         {
-            dbcontext.usp_tblAppointment_del(FeedbackId);
-            return Json("1", JsonRequestBehavior.AllowGet);
+            var result = dbcontext.usp_Feedbacks_Del(FeedbackId).ToString();
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

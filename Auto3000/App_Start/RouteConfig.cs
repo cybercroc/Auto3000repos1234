@@ -32,12 +32,12 @@ namespace Auto3000
 
             #region [Routes For FeedBack Admin]
             routes.MapRoute("AdminFeedback", "admin/feedback", new { controller = "AdminFeedback", action = "Index" });
-            routes.MapRoute("AdminFeedbackDelete", "admin/feedback", new { controller = "AdminFeedback", action = "Delete" });
+            routes.MapRoute("AdminFeedbackDelete", "admin/feedbackdel", new { controller = "AdminFeedback", action = "Delete" });
             #endregion
 
             #region [Routes For Contact Admin]
             routes.MapRoute("AdminContact", "admin/contact", new { controller = "AdminContact", action = "Index" });
-            routes.MapRoute("AdminContactDelete", "admin/contact", new { controller = "AdminContact", action = "Delete" });
+            routes.MapRoute("AdminContactDelete", "admin/contactdel", new { controller = "AdminContact", action = "Delete" });
             #endregion
 
         }

@@ -33,7 +33,7 @@
                     <label class="type1 fT">
                         Feedback
                     </label>
-                    @Html.TextAreaFor(model => model.FeedBack, new { @id = "txtFeedback", @class = "txtArea5 fT", @cols = "80", @rows = "40",  @readonly = true })
+                    @Html.TextAreaFor(model => model.FeedBack, new { @id = "txtFeedback", @class = "txtArea5 fT", @cols = "80", @rows = "40", @readonly = true })
                     <div class="clr">
                     </div>
                 </div>
@@ -168,18 +168,24 @@
 
         //Delete function
         $('.dltRow').live('click', function () {
-            fb_id = $(this).parent().parent().attr('id');
+            var perent = $(this).parent().parent();
+            fb_id = perent.attr('id');
             if (confirm("Are you sure you want to delete?")) {
-                var viewUrl = "feedbackdel?id=" + fb_id;
-                $.ajax({  //Ajax Call Start To Retrieve Menu List
+                var viewUrl = "feedbackdel?feedbackid=" + fb_id;
+                $.ajax({
                     type: "GET",
                     url: viewUrl,
                     dataType: 'json',
                     success: function (response) {
-                        $(this).parent().parent().parent().remove();
-                        alert("Feedback deleted successfully.")
+                        if (response.data != "0" && response.data != "") {
+                            perent.remove();
+                            alert("Feedback deleted successfully.")
+                        }
+                        else {
+                            alert('database error');
+                        }
                     }, error: function (response) {
-                        alert("Server Error!");
+                        alert('Server error');
                     }
                 });
             }

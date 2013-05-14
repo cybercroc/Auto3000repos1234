@@ -36,10 +36,10 @@ namespace Auto3000.Controllers.Admin
         #endregion
 
         #region [Delete records from Contact table]
-        [HttpPost]
+
         public ActionResult Delete(Int32 ContactId)
         {
-            var result = dbcontext.usp_Feedbacks_Del(ContactId);
+            var result = dbcontext.usp_Contacts_del(ContactId);
             return Json("1", JsonRequestBehavior.AllowGet);
         }
         #endregion

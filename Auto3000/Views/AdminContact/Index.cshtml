@@ -204,15 +204,17 @@
 
         //Delete function
         $('.dltRow').live('click', function () {
-            fb_id = $(this).parent().parent().attr('id');
+            var perent = $(this).parent().parent();
+            
+            ct_id = perent.attr('id');
             if (confirm("Are you sure you want to delete?")) {
-                var viewUrl = "contact?id=" + fb_id;
+                var viewUrl = "contact?contactid=" + ct_id;
                 $.ajax({  //Ajax Call Start To Retrieve Menu List
                     type: "GET",
                     url: viewUrl,
                     dataType: 'json',
                     success: function (response) {
-                        $(this).parent().parent().parent().remove();
+                        perent.remove();
                         alert("Contact deleted successfully.")
                     },
                     error: function (response) {
