@@ -6,6 +6,33 @@
     <edmx:StorageModels>
     <Schema Namespace="Auto3000Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="Auto3000ModelStoreContainer" />
+        <Function Name="usp_Contacts_del" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="ContactId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Contacts_sel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="ContactId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Contacts_upd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="ContactId" Type="int" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="usp_Feedbacks_Del" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="FeedBackId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Feedbacks_sel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="FeedBackId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Feedbacks_upd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Admin">
+          <Parameter Name="FeedBackId" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsShown" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="usp_Feedbacks_ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Customer">
+          <Parameter Name="UserId" Type="nvarchar" Mode="In" />
+          <Parameter Name="FeedBack" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Ratings" Type="int" Mode="In" />
+          <Parameter Name="QuestionId" Type="int" Mode="In" />
+          <Parameter Name="Answers" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="usp_tblAdminUser_sel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserName" Type="nvarchar" Mode="In" />
           <Parameter Name="Password" Type="nvarchar" Mode="In" />
@@ -41,7 +68,34 @@
           <Parameter Name="AnnouncementId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_tblAppointment_del">
-            <Parameter Name="AnnouncementId" Mode="In" Type="Int32" />
+          <Parameter Name="AnnouncementId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Feedbacks_Del">
+          <Parameter Name="FeedBackId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Feedbacks_upd">
+            <Parameter Name="FeedBackId" Mode="In" Type="String" />
+            <Parameter Name="IsShown" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Feedbacks_ins">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="FeedBack" Mode="In" Type="String" />
+            <Parameter Name="Ratings" Mode="In" Type="Int32" />
+            <Parameter Name="QuestionId" Mode="In" Type="Int32" />
+            <Parameter Name="Answers" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Feedbacks_sel" ReturnType="Collection(Auto3000Model.usp_Feedbacks_sel_Result)">
+          <Parameter Name="FeedBackId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Contacts_del">
+          <Parameter Name="ContactId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Contacts_upd">
+            <Parameter Name="ContactId" Mode="In" Type="Int32" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Contacts_sel" ReturnType="Collection(Auto3000Model.usp_Contacts_sel_Result)">
+            <Parameter Name="ContactId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_tblAppointment_sel_Result">
@@ -50,6 +104,28 @@
           <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_Feedbacks_sel_Result">
+          <Property Type="Int32" Name="FeedBackId" Nullable="false" />
+          <Property Type="String" Name="FeedBack" Nullable="true" />
+          <Property Type="Int32" Name="Ratings" Nullable="false" />
+          <Property Type="Boolean" Name="Show" Nullable="false" />
+          <Property Type="String" Name="SentDate" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Answers" Nullable="false" />
+          <Property Type="String" Name="Question" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="UserId" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="usp_Contacts_sel_Result">
+          <Property Type="Int32" Name="ContactId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="10" />
+          <Property Type="Boolean" Name="IsApproved" Nullable="false" />
+          <Property Type="String" Name="SentDate" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="SubjectName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -71,6 +147,41 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="usp_tblAppointment_del" FunctionName="Auto3000Model.Store.usp_tblAppointment_del" />
+          <FunctionImportMapping FunctionImportName="usp_Feedbacks_Del" FunctionName="Auto3000Model.Store.usp_Feedbacks_Del" />
+          <FunctionImportMapping FunctionImportName="usp_Feedbacks_ins" FunctionName="Auto3000Model.Store.usp_Feedbacks_ins" />
+          <FunctionImportMapping FunctionImportName="usp_Feedbacks_upd" FunctionName="Auto3000Model.Store.usp_Feedbacks_upd" />
+          <FunctionImportMapping FunctionImportName="usp_Feedbacks_sel" FunctionName="Auto3000Model.Store.usp_Feedbacks_sel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Auto3000Model.usp_Feedbacks_sel_Result">
+                <ScalarProperty Name="FeedBackId" ColumnName="FeedBackId" />
+                <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
+                <ScalarProperty Name="Ratings" ColumnName="Ratings" />
+                <ScalarProperty Name="Show" ColumnName="Show" />
+                <ScalarProperty Name="SentDate" ColumnName="SentDate" />
+                <ScalarProperty Name="Answers" ColumnName="Answers" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Contacts_del" FunctionName="Auto3000Model.Store.usp_Contacts_del" />
+          <FunctionImportMapping FunctionImportName="usp_Contacts_upd" FunctionName="Auto3000Model.Store.usp_Contacts_upd" />
+          <FunctionImportMapping FunctionImportName="usp_Contacts_sel" FunctionName="Auto3000Model.Store.usp_Contacts_sel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Auto3000Model.usp_Contacts_sel_Result">
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="SentDate" ColumnName="SentDate" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -22,7 +22,7 @@ namespace Auto3000.Controllers.Admin
             return View();
         }
 
-
+        /*Insert into tblAnnouncement*/
         [HttpPost]
         public ActionResult Index(AdminModel.Announcement model)
         {

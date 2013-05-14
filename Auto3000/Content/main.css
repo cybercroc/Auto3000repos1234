@@ -16,7 +16,7 @@ body, html{height:100%;width:100%}
 .headerPart.expand{height:70px}
 .headerPart.collapse{height:0px}
 .headerPart.expand .headerInner{padding-top:4px;position:relative}
-.headerPart.collapse .headerInner{padding-top:4px;position:relative;height:0px}
+.headerPart.collapse .headerInner{padding-top:4px;position:relative;height:0px}@cols="80" , @rows="4"
 .wrapper{width:1150px;margin-right:auto;margin-left:auto; }
 #wrapper{min-height:600px;}
 .topBar{height:37px}

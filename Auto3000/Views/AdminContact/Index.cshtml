@@ -1,0 +1,289 @@
+﻿@model Auto3000.Models.AdminModel.Contact
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+
+
+@section Db_Popup
+{
+    <div class="popCore" style="width: 740px">
+        <div class="heading drag">
+            <span>Feedback</span>
+            <div class="popMenu">
+                <a href="javascript:void(0)" title="Close" class="close">
+                    <img src="@Url.Content("~/Content/images/icon_close.png")" width="14" height="14" alt="Close" /></a>
+            </div>
+        </div>
+
+
+        @using (Ajax.BeginForm("Index", "AdminContact", null,
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "updateSucces",
+            OnFailure = "updateFailure"
+        }, new { @id = "contactFrom" }))
+        {
+         
+            @Html.HiddenFor(model => model.ContactId, new { @id = "hdContactId" })
+   
+            <div class="baseForm lft padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        First Name
+                    </label>
+                    @Html.TextBoxFor(model => model.FirstName, new { @id = "txtFirstName", @class = "txtBox1", @maxlength = "100", @readonly = true })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div> 
+            <div class="baseForm lft padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        Last Name
+                    </label>
+                    @Html.TextBoxFor(model => model.LastName, new { @id = "txtLastName", @class = "txtBox1", @maxlength = "100", @readonly = true })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div> 
+            <div class="baseForm lft padBNone">
+                <div class="formRow">
+                    <label class="type1 fT">
+                        Subject
+                    </label>
+                    @Html.TextBoxFor(model => model.SubjectName, new { @id = "txtSubject", @class = "txtBox6 fT", @maxlength = "100", @readonly = true })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="baseForm lft padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        Email
+                    </label>
+                    @Html.TextBoxFor(model => model.Email, new { @id = "txtEmail", @class = "txtBox1", @maxlength = "100", @readonly = true })
+
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm lft padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        Phone
+                    </label>
+                    @Html.TextBoxFor(model => model.Phone, new { @id = "txtPhone", @class = "txtBox1", @maxlength = "30", @readonly = true })
+
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm lft padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        Zip Code
+                    </label>
+                    @Html.TextBoxFor(model => model.ZipCode, new { @id = "txtZipCode", @class = "txtBox1", @maxlength = "10", @readonly = true })
+
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm rgt padBNone" style="width: 47%">
+                <div class="formRow">
+                    <label class="type1">
+                        Approved
+                    </label>
+
+                    @Html.CheckBox("IsApproved")
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="clr">
+            </div>    
+        }
+
+        <div class="popFooter">
+            <div class="popBtnHolder">
+                <input id="btnSubmit" type="button" value="Submit" class="btn2 lft" />
+                <input id="btnCancel" type="button" value="Cancel" class="btn2 lft" />
+            </div>
+        </div>
+    </div>
+}
+@section Db_pageHeading{
+}
+@section Db_rightTop{
+}
+@section Db_rightNav
+{
+
+    <div class="contentCore">
+        <img src="~/Content/images/loader.gif" id="loadimg" />
+        <div class="gridInnerHead">
+            <span class="lft">Contact</span>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="gridCore Country">
+            <ul class="gridHead">
+                <li fl="20">User Name</li>
+                <li fl="30">Subject</li>
+                <li fx="200">Email</li>
+                <li fl="10">Phone</li>
+                <li fl="10">Zip Code</li>
+                <li fl="08">Approved</li>
+                <li fl="10">Date</li>
+                <li fl="10">Edit</li>
+            </ul>
+
+
+            <div id="maingrid">
+            </div>
+        </div>
+    </div>
+}
+
+@section Db_Header
+{
+
+    <script type="text/javascript">
+        $(function () {
+            $('#loadimg').ajaxStart(function () { $(this).show(); });
+            $('#loadimg').ajaxComplete(function () { $(this).hide(); });
+        });
+        $('.close').live('click', function () { popClose(); }); //closing function
+        $('#btnCancel').live('click', function () { popClose(); }); //closing function      
+
+        //Add Function
+        $(".addNew").live('click', function () {
+            popOpen(formHtml1);
+            rebindForm("#contactFrom");
+            $('#hdContactId').val(0);
+        });
+        $('.edtRow').live('click', function () {
+            li_id = $(this).parent().parent().attr('id');
+
+            var viewUrl = "contact?id=" + li_id;
+            $.ajax({  //Ajax Call Start To Retrieve Menu List
+
+                type: "GET",
+                url: viewUrl,
+                dataType: 'json',
+                success: function (response) {
+                    popOpen(formHtml1);
+                    rebindForm("#contactFrom");
+                    $('#hdContactId').val(response[0].ContactId);
+                    $('#txtFirstName').val(response[0].FirstName);
+                    $('#txtLastName').val(response[0].LastName);
+                    $('#txtSubject').val(response[0].SubjectName);
+                    $('#txtEmail').val(response[0].Email);
+                    $('#txtPhone').val(response[0].Phone);
+                    $('#txtZipCode').val(response[0].ZipCode);
+
+                    if (response[0].IsApproved) {
+                        $('#IsApproved').attr('checked', 'checked');
+                    }
+                    else {
+                        $('#IsApproved').removeAttr('checked');
+
+                    }
+
+                }, //Response Close
+                error: function (response) {
+                    alert("Server Error!");
+                }
+            }); //Ajax Call Close 
+
+        });           //Edit Close
+
+
+        //Delete function
+        $('.dltRow').live('click', function () {
+            fb_id = $(this).parent().parent().attr('id');
+            if (confirm("Are you sure you want to delete?")) {
+                var viewUrl = "contact?id=" + fb_id;
+                $.ajax({  //Ajax Call Start To Retrieve Menu List
+                    type: "GET",
+                    url: viewUrl,
+                    dataType: 'json',
+                    success: function (response) {
+                        $(this).parent().parent().parent().remove();
+                        alert("Contact deleted successfully.")
+                    },
+                    error: function (response) {
+                        alert("Server Error!");
+                    }
+                });
+            }
+
+        });
+        //Submit Form
+        $('#btnSubmit').live('click', function () {
+            $("#contactFrom").submit();
+
+        });
+        function updateSucces(data, status, xhr) {
+            var response = eval(data);
+            BindGrid();
+            popClose();
+        }
+        function updateFailure(ajaxContext) {
+            if (ajaxContext.readyState == 4 && ajaxContext.status != 200) {
+                $('.validation-summary-valid').addClass('validation-summary-errors').removeClass('validation-summary-valid');
+                $('.validation-summary-errors ul').html("<li>Invalid Entry..!</li>");
+            }
+        }
+
+        $(document).ready(function () {
+            BindGrid();
+        });
+
+        function BindGrid() {
+            var html = "";
+            $.ajax({
+                type: "GET",
+                url: "contact",
+                dataType: 'json',
+                async: false,
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+
+                        html += '<ul id="' + response[i].ContactId + '">';
+                        html += '<li>' + response[i].UserName + '</li>';
+                        html += '<li>' + response[i].SubjectName + '</li>';
+                        html += '<li>' + response[i].Email + '</li>';
+                        html += '<li>' + response[i].Phone + '</li>';
+                        html += '<li>' + response[i].ZipCode + '</li>';
+                        if (response[i].IsApproved) {
+
+                            html += '<li><img src="@Url.Content("~/Content/images/tick.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+                        else {
+                            html += '<li><img src="@Url.Content("~/Content/images/cross.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+
+                        html += '<li>' + response[i].SentDate + '</li>';
+                        html += '<li><a href="javascript:void(0)" title="Edit" class="edtRow"><img src="@Url.Content("~/Content/images/iconEdit.png")" width="14" height="14" alt="Edit" /></a>';
+
+                        html += '<a href="javascript:void(0)" title="Delete" class="dltRow"><img src="@Url.Content("~/Content/images/iconDelete.gif")" width="14" height="14" alt="Delete" /></a></li>';
+                        html += '</ul>';
+
+                    }
+                    $('#maingrid').html(html);
+                    $('#maingrid ul').show();
+                },
+                error: function (response) {
+                    alert("Server Error!");
+                }
+            });
+        }
+
+    </script>
+}
+
+

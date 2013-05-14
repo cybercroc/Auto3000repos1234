@@ -165,6 +165,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Admin\AdminAccountController.cs" />
     <Compile Include="Controllers\Admin\AdminAppointmentController.cs" />
+    <Compile Include="Controllers\Admin\AdminContactController.cs" />
+    <Compile Include="Controllers\Admin\AdminFeedBackController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -314,6 +316,12 @@
     <Content Include="Content\images\promail.png" />
     <Content Include="Content\images\promotion.png" />
     <Content Include="Content\images\radio.png" />
+    <Content Include="Content\images\ratingStars\00.png" />
+    <Content Include="Content\images\ratingStars\01.png" />
+    <Content Include="Content\images\ratingStars\02.png" />
+    <Content Include="Content\images\ratingStars\03.png" />
+    <Content Include="Content\images\ratingStars\04.png" />
+    <Content Include="Content\images\ratingStars\05.png" />
     <Content Include="Content\images\refreshIcon.png" />
     <Content Include="Content\images\refreshIcon2.png" />
     <Content Include="Content\images\reorderIcon.png" />
@@ -409,9 +417,16 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Auto3000Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\ratingStars\00.png" />
+    <Content Include="Images\ratingStars\01.png" />
+    <Content Include="Images\ratingStars\02.png" />
+    <Content Include="Images\ratingStars\03.png" />
+    <Content Include="Images\ratingStars\04.png" />
+    <Content Include="Images\ratingStars\05.png" />
     <Content Include="Models\Auto3000Model.edmx.diagram">
       <DependentUpon>Auto3000Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\images\ratingStars\vssver2.scc" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\Admin\main.js" />
     <Content Include="Scripts\Admin\scroll.min.js" />
@@ -458,6 +473,8 @@
     <Content Include="Views\AdminAccount\Login.cshtml" />
     <Content Include="Views\AdminAccount\ChangePassword.cshtml" />
     <Content Include="Views\AdminAppointment\Index.cshtml" />
+    <Content Include="Views\AdminFeedBack\Index.cshtml" />
+    <Content Include="Views\AdminContact\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Admin\" />

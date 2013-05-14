@@ -1,0 +1,274 @@
+﻿@model Auto3000.Models.AdminModel.Feedback
+@{
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_CMSLayout.cshtml";
+}
+
+@section Db_Popup
+{
+    <div class="popCore" style="width: 740px">
+        <div class="heading drag">
+            <span>Feedback</span>
+            <div class="popMenu">
+                <a href="javascript:void(0)" title="Close" class="close">
+                    <img src="@Url.Content("~/Content/images/icon_close.png")" width="14" height="14" alt="Close" /></a>
+            </div>
+        </div>
+
+
+        @using (Ajax.BeginForm("Index", "AdminFeedback", null,
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            OnSuccess = "updateSucces",
+            OnFailure = "updateFailure"
+        }, new { @id = "feedbackForm" }))
+        {
+         
+            @Html.HiddenFor(model => model.FeedBackId, new { @id = "hdFeedbackId" })
+   
+            <div class="baseForm lft padBNone">
+                <div class="formRow">
+                    <label class="type1 fT">
+                        Feedback
+                    </label>
+                    @Html.TextAreaFor(model => model.FeedBack, new { @id = "txtFeedback", @class = "txtArea5 fT", @cols = "80", @rows = "40",  @readonly = true })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div> 
+            <div class="baseForm lft padBNone">
+                <div class="formRow">
+                    <label class="type1 fT">
+                        Question
+                    </label>
+                    @Html.TextBoxFor(model => model.Question, new { @id = "txtQuestion", @class = "txtBox6 fT", @maxlength = "300", @readonly = true })
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm lft padBNone">
+                <div class="formRow">
+                    <label class="type1 fT">
+                        Answer
+                    </label>
+                    @Html.TextAreaFor(model => model.Answers, new { @id = "txtAnswer", @class = "txtArea5 fT", @cols = "80", @rows = "40", @readonly = true })
+
+
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="baseForm rgt padBNone">
+                <div class="formRow">
+                    <label class="type1 ft">
+                        Show
+                    </label>
+
+                    @Html.CheckBox("IsShow")
+                    <div class="clr">
+                    </div>
+                </div>
+            </div>
+            <div class="clr">
+            </div>    
+        }
+
+        <div class="popFooter">
+            <div class="popBtnHolder">
+                <input id="btnSubmit" type="button" value="Submit" class="btn2 lft" />
+                <input id="btnCancel" type="button" value="Cancel" class="btn2 lft" />
+            </div>
+        </div>
+    </div>
+}
+@section Db_pageHeading{
+}
+@section Db_rightTop{
+}
+@section Db_rightNav
+{
+
+    <div class="contentCore">
+        <img src="~/Content/images/loader.gif" id="loadimg" />
+        <div class="gridInnerHead">
+            <span class="lft">Feedbacks</span>
+            <div class="clr">
+            </div>
+        </div>
+        <div class="gridCore Country">
+            <ul class="gridHead">
+                <li fl="30">User Name</li>
+                <li fl="55">Feedack</li>
+                <li fx="100">Rating</li>
+                <li fx="80">Show</li>
+                <li fx="80">Date</li>
+                <li fx="70">Edit</li>
+            </ul>
+
+
+            <div id="maingrid">
+            </div>
+        </div>
+    </div>
+}
+
+@section Db_Header
+{
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#loadimg').ajaxStart(function () { $(this).show(); });
+            $('#loadimg').ajaxComplete(function () { $(this).hide(); });
+        });
+
+        $('.close').live('click', function () { popClose(); }); //closing function
+        $('#btnCancel').live('click', function () { popClose(); }); //closing function      
+
+        //Add Function
+        $(".addNew").live('click', function () {
+            popOpen(formHtml1);
+            rebindForm("#feedbackForm");
+            $('#hdFeedbackId').val(0);
+        });
+        $('.edtRow').live('click', function () {
+            li_id = $(this).parent().parent().attr('id');
+
+            var viewUrl = "feedback?id=" + li_id;
+            $.ajax({  //Ajax Call Start To Retrieve Menu List
+                type: "GET",
+                url: viewUrl,
+                dataType: 'json',
+                success: function (response) {
+                    popOpen(formHtml1);
+                    rebindForm("#feedbackForm");
+                    $('#hdFeedbackId').val(response[0].FeedBackId);
+                    $('#txtFeedback').val(response[0].FeedBack);
+                    $('#txtQuestion').val(response[0].Question);
+                    $('#txtAnswer').val(response[0].Answers);
+
+                    if (response[0].Show) {
+                        $('#IsShow').attr('checked', 'checked');
+                    }
+                    else {
+                        $('#IsShow').removeAttr('checked');
+
+                    }
+
+                }, //Response Close
+                error: function (response) {
+                    alert("Server Error!");
+                }
+            }); //Ajax Call Close 
+
+        });           //Edit Close
+
+
+        //Delete function
+        $('.dltRow').live('click', function () {
+            fb_id = $(this).parent().parent().attr('id');
+            if (confirm("Are you sure you want to delete?")) {
+                var viewUrl = "feedbackdel?id=" + fb_id;
+                $.ajax({  //Ajax Call Start To Retrieve Menu List
+                    type: "GET",
+                    url: viewUrl,
+                    dataType: 'json',
+                    success: function (response) {
+                        $(this).parent().parent().parent().remove();
+                        alert("Feedback deleted successfully.")
+                    }, error: function (response) {
+                        alert("Server Error!");
+                    }
+                });
+            }
+
+        });
+        //Submit Form
+        $('#btnSubmit').live('click', function () {
+            $("#feedbackForm").submit();
+
+        });
+        function updateSucces(data, status, xhr) {
+            var response = eval(data);
+            BindGrid();
+            popClose();
+        }
+        function updateFailure(ajaxContext) {
+            if (ajaxContext.readyState == 4 && ajaxContext.status != 200) {
+                $('.validation-summary-valid').addClass('validation-summary-errors').removeClass('validation-summary-valid');
+                $('.validation-summary-errors ul').html("<li>Invalid Entry..!</li>");
+            }
+        }
+
+        $(document).ready(function () {
+            BindGrid();
+        });
+
+        function BindGrid() {
+            var html = "";
+            $.ajax({
+                type: "GET",
+                url: "feedback",
+                dataType: 'json',
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+
+                        html += '<ul id="' + response[i].FeedBackId + '">';
+                        html += '<li>' + response[i].UserId + '</li>';
+                        html += '<li>' + response[i].FeedBack.substring(0, 60); + '</li>';
+                        var ranking = response[i].Ratings;
+
+                        if (ranking != '' && ranking != undefined) {
+                            switch (ranking) {
+                                case 1:
+                                    html += '<li><img id="imgrating" src="@Url.Content("~/Content/images/ratingStars/01.png")" width="95" height="18" alt="" /></li>';
+
+                                    break;
+                                case 2:
+                                    html += '<li><img id="imgrating" src="@Url.Content("~/Content/images/ratingStars/02.png")" width="95" height="18" alt="" /></li>';
+
+                                    break;
+                                case 3:
+                                    html += '<li><img id="imgrating" src="@Url.Content("~/Content/images/ratingStars/03.png")" width="95" height="18" alt="" /></li>';
+
+                                    break;
+                                case 4:
+
+                                    html += '<li><img id="imgrating" src="@Url.Content("~/Content/images/ratingStars/04.png")" width="95" height="18" alt="" /></li>';
+
+                                    break;
+                                case 5:
+                                    html += '<li><img id="imgrating" src="@Url.Content("~/Content/images/ratingStars/05.png")" width="95" height="18" alt="" /></li>';
+
+                                    break;
+                            }
+                        }
+                        if (response[i].Show) {
+
+                            html += '<li><img src="@Url.Content("~/Content/images/tick.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+                        else {
+                            html += '<li><img src="@Url.Content("~/Content/images/cross.png")" width="14" height="14" alt="Active" /></li>';
+                        }
+
+                        html += '<li>' + response[i].SentDate + '</li>';
+                        html += '<li><a href="javascript:void(0)" title="Edit" class="edtRow"><img src="@Url.Content("~/Content/images/iconEdit.png")" width="14" height="14" alt="Edit" /></a>';
+
+                        html += '<a href="javascript:void(0)" title="Delete" class="dltRow"><img src="@Url.Content("~/Content/images/iconDelete.gif")" width="14" height="14" alt="Delete" /></a></li>';
+                        html += '</ul>';
+
+                    }
+                    $('#maingrid').html(html);
+                    $('#maingrid ul').show();
+                },
+                error: function (response) {
+                    alert("Server Error!");
+                }
+            });
+        }
+
+    </script>
+}
+

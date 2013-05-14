@@ -29,6 +29,17 @@ namespace Auto3000
             routes.MapRoute("AdminAppointment", "admin/appointments", new { controller = "AdminAppointment", action = "Index" });
             routes.MapRoute("AdminAppointmentDelete", "admin/appointmentdel", new { controller = "AdminAppointment", action = "Delete" });
             routes.MapRoute("AdminDashboard", "admin/dashboard", new { controller = "AdminAppointment", action = "Dashboard" });
+
+            #region [Routes For FeedBack Admin]
+            routes.MapRoute("AdminFeedback", "admin/feedback", new { controller = "AdminFeedback", action = "Index" });
+            routes.MapRoute("AdminFeedbackDelete", "admin/feedback", new { controller = "AdminFeedback", action = "Delete" });
+            #endregion
+
+            #region [Routes For Contact Admin]
+            routes.MapRoute("AdminContact", "admin/contact", new { controller = "AdminContact", action = "Index" });
+            routes.MapRoute("AdminContactDelete", "admin/contact", new { controller = "AdminContact", action = "Delete" });
+            #endregion
+
         }
     }
 }
